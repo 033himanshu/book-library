@@ -109,7 +109,7 @@ const fetchBooks = async (page) => {
             categories = categories?.reduce((acc, category)=> acc+", "+category)
             authors = authors || "UnKnown"
             publisher= publisher || "UnKnown"
-            publishedDate = publishedDate || "UnKnown"
+            publishedDate = publishedDate || "N/A"
             ratingsCount = ratingsCount || 0
             subtitle = subtitle || ""
             title = title || "Unknown"
