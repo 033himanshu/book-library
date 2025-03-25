@@ -233,6 +233,10 @@ header{
 .book-data table td{
     text-align: left;
 }
+.book-data .infolink{
+    font-size: large;
+    margin-top: 10px;
+}
 
 .paging{
     position: absolute;

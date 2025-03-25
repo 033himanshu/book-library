@@ -102,7 +102,7 @@ const fetchBooks = async (page) => {
         data = data.data.data
         if(data.length===0) return false
         for(let book of data){
-            let {title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories} = book.volumeInfo
+            let {title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories, infoLink} = book.volumeInfo
 
             // handle Missing Data
             authors = authors?.reduce((acc, author)=> acc+", "+author)
@@ -116,9 +116,10 @@ const fetchBooks = async (page) => {
             description = description || ""
             categories = categories || ""
             averageRating = averageRating || 0
-            imageLinks = imageLinks?.thumbnail
+            imageLinks = imageLinks?.thumbnail || './images/placeholder.png'
+            infoLink = infoLink || ""
             // store all data in books array
-            books.push({title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories})
+            books.push({title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories, infoLink})
         }
         return true
     } catch (error) {
@@ -174,10 +175,10 @@ const showBook = book => {
         <div class="book-data">
             <div class="title">${book.title}</div>
             <div class="subtitle">${book.subtitle}</div>
+            <a href='${book.infoLink}' class='infolink'>Click to See  Details on PlayStore</a>
             <div class="description">
                 ${book.description}
             </div>
-            
             <table>
                 <tr>
                     <th>Authors</th>
