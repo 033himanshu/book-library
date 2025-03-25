@@ -1,4 +1,5 @@
 # Book-Library
+# [Live Link](https://book-library-ecru-theta.vercel.app/)
 
 Book Library webite using FreeAPI.app that will fetch and display book data dynamically in a user-friendly way.
 
@@ -8,7 +9,7 @@ Book Library webite using FreeAPI.app that will fetch and display book data dyna
 - CSS
 - JavaScript
 
-## [Live Link]()
+
 ## Features
 
 - Fetch books from the API and display them as a list/grid
