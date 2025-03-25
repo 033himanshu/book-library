@@ -133,8 +133,6 @@ const fetchAllBooks = async()=>{
     loading.style.display = ""
     while(await fetchBooks(page)){
         page += 1
-        console.log(books.length)
-        console.log(page, "Fetched")
     }
     loading.style.display = "none"
 }
