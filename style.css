@@ -97,6 +97,10 @@ header{
     gap : 10px;
     box-shadow: rgba(255, 255, 255, 0.15) 1.95px 1.95px 2.6px;
 }
+.loading{
+    font-size:  xx-large;
+    text-align : center;
+}
 .grid{
     justify-content: center;
 }

@@ -6,7 +6,7 @@ const searchInput = document.querySelector('.search-input')
 const previousPageBtn = document.querySelector('.paging .previous')
 const nextPageBtn = document.querySelector('.paging .next')
 const currentPage = document.querySelector('.paging .current')
-
+const loading = document.querySelector('.loading')
 let books = [] // all books fetched from API, this array will be working like our database, we search, sort according to data in this array only
 const MAX_BOOK_PER_PAGE = 6 // allowed max books per page
 let pageLimit = 1 // max available page, will dynamically change
@@ -93,13 +93,14 @@ const insertBookIntoContainer = (page=1) => {
 
 
 //fetch all books from api
-const fetchBooks = async () => {
-    const url = 'https://api.freeapi.app/api/v1/public/books?page=1&limit=20&query=tech';
+const fetchBooks = async (page) => {
+    const url =  `https://api.freeapi.app/api/v1/public/books?page=${page}&limit=20`;
     const options = {method: 'GET', headers: {accept: 'application/json'}};
     try {
         const response = await fetch(url, options);
         let data = await response.json();
         data = data.data.data
+        if(data.length===0) return false
         for(let book of data){
             let {title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories} = book.volumeInfo
 
@@ -115,14 +116,29 @@ const fetchBooks = async () => {
             description = description || ""
             categories = categories || ""
             averageRating = averageRating || 0
-            imageLinks = imageLinks.thumbnail
+            imageLinks = imageLinks?.thumbnail
             // store all data in books array
             books.push({title, subtitle, description, authors, imageLinks, publisher, publishedDate, averageRating, ratingsCount,categories})
         }
+        return true
     } catch (error) {
         console.error(error);
+        return  false
     }
 }
+// this fetch All  Books
+// all Books because it will help us in searching for Book
+const fetchAllBooks = async()=>{
+    let page = 1;
+    loading.style.display = ""
+    while(await fetchBooks(page)){
+        page += 1
+        console.log(books.length)
+        console.log(page, "Fetched")
+    }
+    loading.style.display = "none"
+}
+
 
 
 
@@ -145,6 +161,7 @@ nextPageBtn.addEventListener('click',()=>{
 
 // show information about a single book
 const showBook = book => {    
+    loading.style.display = "none"
     document.title = book.title
     showBookContainer.innerHTML = `
         <img src="${book.imageLinks}" alt="" class="thumbnail">
@@ -224,7 +241,6 @@ const initialSetUp = ()=>{
 }
 
 
-
 // checking the url
 // if data is present in url we show a book with details
 // else we show all books
@@ -239,7 +255,7 @@ if(data?.title){
     showBookContainer.style.display = ""
     showBook(data)
 }else{
-    fetchBooks().then(()=>{
+    fetchAllBooks().then(()=>{
         initialSetUp()
     })
 }
@@ -255,7 +271,7 @@ searchInput.addEventListener('input',async ()=>{
         return
     }
     if(books.length===0)
-        await fetchBooks()
+        await fetchAllBooks()
 
     currentUsingBooksIndeces=[]
     for(let id=0;id<books.length;++id){
